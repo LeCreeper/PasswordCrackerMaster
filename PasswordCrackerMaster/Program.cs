@@ -12,16 +12,27 @@ namespace PasswordCrackerMaster
         {
             #region UDPServer
 
+            //This program is designed to be used with a master-slave architecture, with this computer being the host or master computer. 
+
             //UdpClients
+            //This is the UdpClient that I use for receiving data!
+            //NOTE: The port used should not also be used for sending data!
             UdpClient udpMasterServer = new UdpClient(7899);
             
+            //This is the UdpClient that I use for sending data!
+            //NOTE!: should be set to the receivers IP and a different port than the one you receive on!
             UdpClient udpSlaveClient = new UdpClient("192.168.24.186",7999);
 
             //IP's
+            //The slaveIP is the ip of the computer you are SENDING data to!
             IPAddress slaveIp = IPAddress.Parse("192.168.24.186");
-            IPAddress ownIp = IPAddress.Parse("192.168.24.178");
+
+            //masterIp is the ip of this computer!
+            IPAddress masterIp = IPAddress.Parse("192.168.24.178");
 
             //EndPoints
+            //NOTE!: The endpoint consists of an IP and a PORT, where the IP is the ip of the person SENDING data to you.
+            //And the port is DIFFERENT than the port this computer uses to SEND data. 
             IPEndPoint IpEndPoint = new IPEndPoint(slaveIp, 7899);
             
 
@@ -34,20 +45,20 @@ namespace PasswordCrackerMaster
                     //Sending Data
                     string test = "yes!";
 
-                    Console.WriteLine("Ready to send...");
+                    Console.WriteLine("Ready to send...\n");
                     Byte[] sendData = Encoding.ASCII.GetBytes("Data is: " + test);
-                    Console.WriteLine("Data is: " + test);
+                    
                     udpSlaveClient.Send(sendData, sendData.Length);
-                    Console.WriteLine("Data is sent!");
+                    Console.WriteLine("Data sent is: " + sendData + "\n");
 
                     Thread.Sleep(2000);
 
                     //Receiving Data
-                    Console.WriteLine("Ready to receive...");
+                    Console.WriteLine("Ready to receive...\n");
                     Byte[] receivedRawData = udpMasterServer.Receive(ref IpEndPoint);
                     string receivedStringData = Encoding.ASCII.GetString(receivedRawData);
 
-                    Console.WriteLine("The data reads: " + receivedStringData);
+                    Console.WriteLine("The data reads: " + receivedStringData + "\n");
                 }
             }
             catch (Exception e)
