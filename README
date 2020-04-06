@@ -1,0 +1,3 @@
+This project was meant to be a homemade PasswordCracker for IT Security Class,
+that uses a Master-Slave architecture to delegate the work to different devices,
+but we never got that far, but this still shows Two-Way UDP communication.
